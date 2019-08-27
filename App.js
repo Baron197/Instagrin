@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import LoginForm from './src/components/LoginForm';
+import Main from './src/components/Main';
 
 class App extends Component {
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <LoginForm />
-      </View>
+      <Main />
     )
   }
 }

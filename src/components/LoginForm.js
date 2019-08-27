@@ -7,7 +7,7 @@ class LoginForm extends Component {
         const { containerStyle, inputStyle } = styles;
         return (
             <View style={containerStyle}>
-                <Text h3>Instagrin</Text>
+                <Text h3 h3Style={{ color: '#4388d6'}}>Instagrin</Text>
                 <View style={inputStyle}>
                     <Input
                         placeholder='Email'
@@ -15,17 +15,18 @@ class LoginForm extends Component {
                             <Icon
                                 name='email'
                                 size={24}
-                                color='black'
+                                color='#4388d6'
                             />
                         }
                     />
                     <Input
+                        secureTextEntry
                         placeholder='Password'
                         leftIcon={
                             <Icon
                                 name='lock'
                                 size={24}
-                                color='black'
+                                color='#4388d6'
                             />
                         }
                     />
@@ -39,8 +40,8 @@ class LoginForm extends Component {
                         />
                     }
                     title="Login"
-                    type="outline"
-                    containerStyle={{ width: '100%' }}
+                    // type="outline"
+                    containerStyle={{ width: '95%', marginBottom: 10 }}
                 />
                 <Button
                     icon={
@@ -52,7 +53,8 @@ class LoginForm extends Component {
                     }
                     title="Register"
                     type="outline"
-                    containerStyle={{ width: '100%' }}
+                    onPress={() => this.props.navigation.navigate('Register')}
+                    containerStyle={{ width: '95%' }}
                 />
             </View>
         )
@@ -68,8 +70,8 @@ const styles = StyleSheet.create({
         padding: 10
     },
     inputStyle: {
-        marginTop: 30,
-        marginBottom: 50,
+        marginTop: 50,
+        marginBottom: 100,
         width: '100%'
     }
 })
