@@ -3,6 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Input, Icon, Button } from 'react-native-elements';
 
 class LoginForm extends Component {
+    state = { passHidden : true }
+
     render() {
         const { containerStyle, inputStyle } = styles;
         return (
@@ -20,7 +22,7 @@ class LoginForm extends Component {
                         }
                     />
                     <Input
-                        secureTextEntry
+                        secureTextEntry={this.state.passHidden}
                         placeholder='Password'
                         leftIcon={
                             <Icon
@@ -29,14 +31,22 @@ class LoginForm extends Component {
                                 color='#4388d6'
                             />
                         }
+                        rightIcon={
+                            <Icon
+                                name={this.state.passHidden ? 'visibility-off' : 'visibility'}
+                                size={24}
+                                color={this.state.passHidden ? '#bfc3c9' : '#4388d6'}
+                                onPress={() => this.setState({ passHidden: !this.state.passHidden })}
+                            />
+                        }
                     />
                  </View>
                 <Button
                     icon={
                         <Icon
                             name="chevron-right"
-                            size={15}
-                            color="black"
+                            size={20}
+                            color="white"
                         />
                     }
                     title="Login"
@@ -47,8 +57,8 @@ class LoginForm extends Component {
                     icon={
                         <Icon
                             name="accessibility"
-                            size={15}
-                            color="black"
+                            size={20}
+                            color="#4388d6"
                         />
                     }
                     title="Register"

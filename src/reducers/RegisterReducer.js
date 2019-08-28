@@ -32,7 +32,7 @@ export default (state = INITIAL_STATE, action) => {
         case REGISTER_USER_FAIL :
             return { ...state, error: action.payload, loading: false };
         case REGISTER_USER_SUCCESS :
-            return { ...state, loading: false };
+            return { ...INITIAL_STATE, loading: false };
         default :
             return state;
     }

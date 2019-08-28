@@ -1,8 +1,39 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Input, Icon, Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+import {
+    emailRegisterChanged,
+    usernameRegisterChanged,
+    passwordRegisterChanged,
+    conPasswordRegisterChanged,
+    registerUser
+} from '../actions';
 
 class RegisterForm extends Component {
+    state = { passHidden: true, conPassHidden: true }
+
+    onBtnRegisterPress = () => {
+        this.props.registerUser(
+            this.props.email,
+            this.props.username,
+            this.props.password,
+            this.props.conPassword
+        )
+    }
+    
+    renderError() {
+        if (this.props.error) {
+            return (
+                <View style={{ marginBottom: 15 }}>
+                    <Text style={{ color: 'red'}}>
+                        {this.props.error}
+                    </Text>
+                </View>
+            );
+        }
+    }
+
     render() {
         const { containerStyle, inputStyle } = styles;
         return (
@@ -18,8 +49,23 @@ class RegisterForm extends Component {
                                 color='#4388d6'
                             />
                         }
+                        value={this.props.email}
+                        onChangeText={(text) => this.props.emailRegisterChanged(text)}
                     />
                     <Input
+                        placeholder='Username'
+                        leftIcon={
+                            <Icon
+                                name='account-box'
+                                size={24}
+                                color='#4388d6'
+                            />
+                        }
+                        value={this.props.username}
+                        onChangeText={(text) => this.props.usernameRegisterChanged(text)}
+                    />
+                    <Input
+                        secureTextEntry={this.state.passHidden}
                         placeholder='Password'
                         leftIcon={
                             <Icon
@@ -28,18 +74,52 @@ class RegisterForm extends Component {
                                 color='#4388d6'
                             />
                         }
+                        rightIcon={
+                            <Icon
+                                name={this.state.passHidden ? 'visibility-off' : 'visibility'}
+                                size={24}
+                                color={this.state.passHidden ? '#bfc3c9' : '#4388d6'}
+                                onPress={() => this.setState({ passHidden: !this.state.passHidden })}
+                            />
+                        }
+                        value={this.props.password}
+                        onChangeText={(text) => this.props.passwordRegisterChanged(text)}
+                    />
+                    <Input
+                        secureTextEntry={this.state.conPassHidden}
+                        placeholder='Confirm Password'
+                        leftIcon={
+                            <Icon
+                                name='lock'
+                                size={24}
+                                color='#4388d6'
+                            />
+                        }
+                        rightIcon={
+                            <Icon
+                                name={this.state.conPassHidden ? 'visibility-off' : 'visibility'}
+                                size={24}
+                                color={this.state.conPassHidden ? '#bfc3c9' : '#4388d6'}
+                                onPress={() => this.setState({ conPassHidden: !this.state.conPassHidden })}
+                            />
+                        }
+                        value={this.props.conPassword}
+                        onChangeText={(text) => this.props.conPasswordRegisterChanged(text)}
                     />
                  </View>
+                 {this.renderError()}
                 <Button
                     icon={
                         <Icon
                             name="accessibility"
-                            size={15}
-                            color="black"
+                            size={20}
+                            color="white"
                         />
                     }
                     title="Register"
                     // type="outline"
+                    loading={this.props.loading}
+                    onPress={this.onBtnRegisterPress}
                     containerStyle={{ width: '95%' }}
                 />
             </View>
@@ -62,4 +142,21 @@ const styles = StyleSheet.create({
     }
 })
 
-export default RegisterForm;
+const mapStateToProps = ({ registerForm }) => {
+    return { 
+        email : registerForm.email, 
+        username : registerForm.username,  
+        password : registerForm.password,
+        conPassword : registerForm.conPassword,
+        loading : registerForm.loading,
+        error : registerForm.error
+    }
+}
+
+export default connect(mapStateToProps, {
+    emailRegisterChanged,
+    usernameRegisterChanged,
+    passwordRegisterChanged,
+    conPasswordRegisterChanged,
+    registerUser
+})(RegisterForm);
