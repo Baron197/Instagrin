@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Input, Icon, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { StackActions, NavigationActions } from 'react-navigation';
 import {
     emailRegisterChanged,
     usernameRegisterChanged,
@@ -12,6 +13,16 @@ import {
 
 class RegisterForm extends Component {
     state = { passHidden: true, conPassHidden: true }
+
+    componentDidUpdate() {
+        if(this.props.user) {
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'MainMenu' })],
+            });
+            this.props.navigation.dispatch(resetAction);
+        }
+    }
 
     onBtnRegisterPress = () => {
         this.props.registerUser(
@@ -142,14 +153,15 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = ({ registerForm }) => {
+const mapStateToProps = ({ registerForm, auth }) => {
     return { 
         email : registerForm.email, 
         username : registerForm.username,  
         password : registerForm.password,
         conPassword : registerForm.conPassword,
         loading : registerForm.loading,
-        error : registerForm.error
+        error : registerForm.error,
+        user : auth.user
     }
 }
 

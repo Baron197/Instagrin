@@ -1,5 +1,6 @@
 import firebase from '@firebase/app';
 import '@firebase/auth';
+import '@firebase/database';
 
 import { 
     EMAIL_REGISTER_CHANGED,
@@ -55,13 +56,21 @@ export const registerUser = (email,username,password,conPassword) => {
                         displayName: username,
                         photoURL: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg'
                     }).then(() => {
-                        dispatch({
-                            type: REGISTER_USER_SUCCESS
+                        firebase.database().ref(`/users/${user.user.uid}`)
+                        .push({ 
+                            displayName: username, 
+                            photoURL: 'https://icon-library.net/images/default-profile-icon/default-profile-icon-24.jpg' 
+                        }).then(() => {
+                            dispatch({
+                                type: REGISTER_USER_SUCCESS
+                            })
+                            dispatch({
+                                type: LOGIN_USER_SUCCESS,
+                                payload: user
+                            });
+                        }).catch((err) => {
+                            dispatch({ type: REGISTER_USER_FAIL, payload: err.message });
                         })
-                        dispatch({
-                            type: LOGIN_USER_SUCCESS,
-                            payload: user
-                        });
                         console.log('Update Profile Success')
                         console.log(user)
                     }).catch((err) => {

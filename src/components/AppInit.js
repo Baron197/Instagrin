@@ -11,12 +11,14 @@ class AppInit extends Component {
             authDomain: "instagrin-c25c5.firebaseapp.com",
             databaseURL: "https://instagrin-c25c5.firebaseio.com",
             projectId: "instagrin-c25c5",
-            storageBucket: "",
+            storageBucket: "instagrin-c25c5.appspot.com",
             messagingSenderId: "974257372915",
             appId: "1:974257372915:web:6bacb3e657269775"
         };
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+        if(!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
     }
 
     render() {

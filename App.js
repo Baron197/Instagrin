@@ -8,7 +8,7 @@ import AppInit from './src/components/AppInit';
 class App extends Component {
   render() {
     const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
-
+    console.disableYellowBox = true;
     return (
       <Provider store={store}>
         <AppInit />

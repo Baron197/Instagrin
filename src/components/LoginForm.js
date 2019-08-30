@@ -1,15 +1,54 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Input, Icon, Button } from 'react-native-elements';
+import { StackActions, NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
+import {
+    emailLoginChanged,
+    passwordLoginChanged,
+    loginUser
+} from '../actions';
 
 class LoginForm extends Component {
     state = { passHidden : true }
+
+    componentDidUpdate() {
+        if(this.props.user) {
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'MainMenu' })],
+            });
+            this.props.navigation.dispatch(resetAction);
+        }
+    }
+
+    onBtnLoginPress = () => {
+        this.props.loginUser(
+            this.props.email,
+            this.props.password
+        )
+    }
+
+    renderError() {
+        if (this.props.error) {
+            return (
+                <View style={{ marginBottom: 15 }}>
+                    <Text style={{ color: 'red'}}>
+                        {this.props.error}
+                    </Text>
+                </View>
+            );
+        }
+    }
 
     render() {
         const { containerStyle, inputStyle } = styles;
         return (
             <View style={containerStyle}>
-                <Text h3 h3Style={{ color: '#4388d6'}}>Instagrin</Text>
+                <Animatable.Text animation={'fadeInDown'}>
+                    <Text h3 h3Style={{ color: '#4388d6'}}>Instagrin</Text>
+                </Animatable.Text>
                 <View style={inputStyle}>
                     <Input
                         placeholder='Email'
@@ -20,6 +59,8 @@ class LoginForm extends Component {
                                 color='#4388d6'
                             />
                         }
+                        value={this.props.email}
+                        onChangeText={(text) => this.props.emailLoginChanged(text)}
                     />
                     <Input
                         secureTextEntry={this.state.passHidden}
@@ -39,8 +80,11 @@ class LoginForm extends Component {
                                 onPress={() => this.setState({ passHidden: !this.state.passHidden })}
                             />
                         }
+                        value={this.props.password}
+                        onChangeText={(text) => this.props.passwordLoginChanged(text)}
                     />
                  </View>
+                 {this.renderError()}
                 <Button
                     icon={
                         <Icon
@@ -51,6 +95,8 @@ class LoginForm extends Component {
                     }
                     title="Login"
                     // type="outline"
+                    loading={this.props.loading}
+                    onPress={this.onBtnLoginPress}
                     containerStyle={{ width: '95%', marginBottom: 10 }}
                 />
                 <Button
@@ -86,4 +132,18 @@ const styles = StyleSheet.create({
     }
 })
 
-export default LoginForm;
+const mapStateToProps = ({ loginForm, auth }) => {
+    return { 
+        email : loginForm.email,  
+        password : loginForm.password,
+        loading : loginForm.loading,
+        error : loginForm.error,
+        user : auth.user
+    }
+}
+
+export default connect(mapStateToProps, {
+    emailLoginChanged,
+    passwordLoginChanged,
+    loginUser
+})(LoginForm);
