@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { Header, Button, Icon, Input } from 'react-native-elements';
 import ImagePicker from 'react-native-image-crop-picker';
 import firebase from '@firebase/app';
@@ -37,7 +37,7 @@ class PostPhoto extends Component {
     }
 
     onBtnPostImagePress = () => {
-        this.setState({ loading: true })
+        this.setState({ loading: true, error: '' })
         const image = this.state.image.path
  
         const Blob = RNFetchBlob.polyfill.Blob
@@ -70,13 +70,12 @@ class PostPhoto extends Component {
             console.log(url);
             const { currentUser } = firebase.auth();
 
-            firebase.database().ref(`/posts`)
-            .push({ imageURL: url, caption: this.state.caption, userId: currentUser.uid })
-            .then(() => {
-                this.setState({ loading: false })
-            }).catch((err) => {
-                this.setState({ loading: false, error: err.message })
-            });
+            return firebase.database().ref(`/posts`)
+                    .push({ imageURL: url, caption: this.state.caption, userId: currentUser.uid })
+            
+        })
+        .then(() => {
+            this.setState({ loading: false })
         })
         .catch((error) => {
             console.log(error);
@@ -86,7 +85,7 @@ class PostPhoto extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 <Header
                     leftComponent={{ text: 'Select Image', style: { color: 'black', fontSize: 18 } }}
                     leftContainerStyle={{ flex: 3 }}
@@ -96,54 +95,56 @@ class PostPhoto extends Component {
                         marginTop: Platform.OS === 'ios' ? 0 : - 25
                     }}
                 />
-                <View style={{ marginVertical: 20, marginHorizontal: 15 }}>
-                    <Button
-                        icon={
-                            <Icon
-                                name="photo-library"
-                                size={30}
-                                color="white"
-                            />
-                        }
-                        title="Select from Gallery"
-                        onPress={this.onBtnSelectGaleryPress}
-                        containerStyle={{ marginBottom : 15 }}
-                    />
-                    <Button
-                        icon={
-                            <Icon
-                                name="photo-camera"
-                                size={30}
-                                color="white"
-                            />
-                        }
-                        title="Open Camera"
-                        onPress={this.onBtnOpenCameraPress}
-                    />
-                    <Input
-                        placeholder='Caption'
-                        onChangeText={(text) => this.setState({ caption: text })}
-                        value={this.state.caption}
-                    />
-                </View>
-                <View style={{ marginHorizontal: 15, alignItems: 'center', justifyContent: 'center' }}>
-                    <Image source={{ uri: this.state.image ? this.state.image.path : null }} style={{ height: 350, width: '100%' }} />
-                </View>
-                <View style={{ marginVertical: 20, marginHorizontal: 15 }}>
-                    <Text style={{ color: 'red' }}>{this.state.error}</Text>
-                    <Button
-                        icon={
-                            <Icon
-                                name="cloud-upload"
-                                size={30}
-                                color="white"
-                            />
-                        }
-                        title="Post Image"
-                        onPress={this.onBtnPostImagePress}
-                        loading={this.state.loading}
-                    />
-                </View>
+                <ScrollView>
+                    <View style={{ marginVertical: 20, marginHorizontal: 15 }}>
+                        <Button
+                            icon={
+                                <Icon
+                                    name="photo-library"
+                                    size={30}
+                                    color="white"
+                                />
+                            }
+                            title="Select from Gallery"
+                            onPress={this.onBtnSelectGaleryPress}
+                            containerStyle={{ marginBottom : 15 }}
+                        />
+                        <Button
+                            icon={
+                                <Icon
+                                    name="photo-camera"
+                                    size={30}
+                                    color="white"
+                                />
+                            }
+                            title="Open Camera"
+                            onPress={this.onBtnOpenCameraPress}
+                        />
+                        <Input
+                            placeholder='Caption'
+                            onChangeText={(text) => this.setState({ caption: text })}
+                            value={this.state.caption}
+                        />
+                    </View>
+                    <View style={{ marginHorizontal: 15, alignItems: 'center', justifyContent: 'center' }}>
+                        <Image source={{ uri: this.state.image ? this.state.image.path : null }} style={{ height: 350, width: '100%' }} />
+                    </View>
+                    <View style={{ marginVertical: 20, marginHorizontal: 15 }}>
+                        <Text style={{ color: 'red' }}>{this.state.error}</Text>
+                        <Button
+                            icon={
+                                <Icon
+                                    name="cloud-upload"
+                                    size={30}
+                                    color="white"
+                                />
+                            }
+                            title="Post Image"
+                            onPress={this.onBtnPostImagePress}
+                            loading={this.state.loading}
+                        />
+                    </View>
+                </ScrollView>
             </View>
         )
     }
