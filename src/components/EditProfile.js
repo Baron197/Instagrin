@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Platform, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Platform, Image, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { Header, ListItem, Button, Input, Overlay, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -73,7 +73,7 @@ class EditProfile extends Component {
                         text: 'Edit Profile', 
                         style: { color: 'black', fontSize: 18 } 
                     }}
-                    rightComponent={{ 
+                    rightComponent={this.props.loading ? <ActivityIndicator size="small" color="#4388d6" /> : { 
                         icon: 'done', 
                         color: '#4388d6',
                         onPress: this.onIconSavePress
