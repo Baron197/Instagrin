@@ -13,7 +13,7 @@ export default createAppContainer(createStackNavigator(
             screen: RegisterForm
         },
         MainMenu: {
-            screen: MainMenu
+            screen: ({ navigation }) => <MainMenu screenProps={{ rootStackNavigator: navigation }} />
         }
     },
     {

@@ -18,3 +18,13 @@ export const LOGIN_USER = 'login_user';
 export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGOUT_USER = 'logout_user';
 export const NOT_LOGIN_YET = 'not_login_yet';
+
+//Edit Profile Reducer
+export const EDIT_PROFILE = 'EDIT_PROFILE';
+export const EDIT_PROFILE_INIT = 'EDIT_PROFILE_INIT';
+export const EDIT_PROFILE_FAIL = 'EDIT_PROFILE_FAIL';
+export const EDIT_PROFILE_SUCCESS = 'EDIT_PROFILE_SUCCESS';
+export const USERNAME_PROFILE_CHANGED = 'USERNAME_PROFILE_CHANGED';
+export const IMAGE_PROFILE_CHANGED = 'IMAGE_PROFILE_CHANGED';
+export const MODAL_SHOW = 'MODAL_SHOW';
+export const MODAL_CLOSE = 'MODAL_CLOSE';
