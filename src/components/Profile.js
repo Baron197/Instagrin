@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text, Platform, Image, TouchableWithoutFeedback } from 'react-native';
 import { Header, ListItem, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { editProfileInit } from '../actions';
+import { editProfileInit, selectPost } from '../actions';
 
 class Profile extends Component {
     onBtnEditProfilePress = () => {
@@ -11,6 +11,27 @@ class Profile extends Component {
             this.props.user.user.photoURL
         );
         this.props.navigation.navigate('EditProfile')
+    }
+
+    selectPostPress = (selectedPost) => {
+        this.props.selectPost(selectedPost)
+        this.props.navigation.navigate('PostDetail')
+    }
+
+    renderListPost = () => {
+        return this.props.postList.map((item) => {
+            if(this.props.user.user.uid === item.userId) {
+                return (
+                    <TouchableWithoutFeedback onPress={() => this.selectPostPress(item)}>
+                        <View 
+                            style={{ width: '33%', marginVertical: 1 }}
+                        >
+                            <Image source={{uri: item.imageURL }} style={{height: 125, width: '100%' }}/>
+                        </View>
+                    </TouchableWithoutFeedback>
+                )
+            }
+        })
     }
 
     render() {
@@ -45,12 +66,22 @@ class Profile extends Component {
                     />
                     <Button 
                         title="Edit Profile"
-                        containerStyle={{ marginTop: 15, marginHorizontal: 15 }}
+                        containerStyle={{ marginVertical: 15, marginHorizontal: 15 }}
                         buttonStyle={{ borderColor: 'black' }}
                         titleStyle={{ color: 'black' }}
                         type='outline'
                         onPress={this.onBtnEditProfilePress}
                     />
+                    <View 
+                        style={{
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            justifyContent: 'space-between',
+                            flex: 1
+                        }}
+                    >
+                        {this.renderListPost()}
+                    </View>
                 </View>
             )
         }
@@ -59,8 +90,8 @@ class Profile extends Component {
     }
 }
 
-const mapStateToProps = ({ auth }) => {
-    return { user: auth.user }
+const mapStateToProps = ({ auth, post }) => {
+    return { user: auth.user, postList: post.postList }
 }
 
-export default connect(mapStateToProps, { editProfileInit })(Profile);
+export default connect(mapStateToProps, { editProfileInit, selectPost })(Profile);

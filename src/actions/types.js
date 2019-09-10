@@ -28,3 +28,9 @@ export const USERNAME_PROFILE_CHANGED = 'USERNAME_PROFILE_CHANGED';
 export const IMAGE_PROFILE_CHANGED = 'IMAGE_PROFILE_CHANGED';
 export const MODAL_SHOW = 'MODAL_SHOW';
 export const MODAL_CLOSE = 'MODAL_CLOSE';
+
+//Post Reducer
+export const FILL_POST_LIST = 'FILL_POST_LIST';
+export const EMPTY_POST_LIST = 'EMPTY_POST_LIST';
+export const SELECT_POST = 'SELECT_POST';
+export const DELETE_POST = 'DELETE_POST';

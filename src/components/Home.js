@@ -12,38 +12,17 @@ import {
     Body, 
     Right 
 } from 'native-base';
-import firebase from '@firebase/app';
-import '@firebase/database';
-import '@firebase/auth';
-import _ from 'lodash';
+import { connect } from 'react-redux';
+import { getListPost } from '../actions';
 
 class Home extends Component {
-    state = { postList: [] }
 
     componentDidMount() {
-        firebase.database().ref(`/posts`)
-        .on('value', snapshot => {
-           console.log(snapshot.val())
-           var postList = []
-            _.map(snapshot.val(), (val, id) => {
-                firebase.database().ref(`/users/${val.userId}`)
-                .once('child_added', (snapshot) => {
-                    var value = snapshot.val()
-                    console.log(value)
-                    postList.push({ 
-                        ...val, 
-                        id, 
-                        username: value.displayName, 
-                        userPhoto: value.photoURL 
-                    })
-                    this.setState({ postList })
-                })
-            });
-        });
+        this.props.getListPost();
     }
 
     renderPostList = () => {
-        return this.state.postList.map((item) => {
+        return this.props.postList.map((item) => {
             return (
                 <View style={{ marginHorizontal: 15, marginVertical: 15 }}>
                     <Card>
@@ -90,4 +69,8 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapStateToProps = ({ post }) => {
+    return { postList: post.postList }
+}
+
+export default connect(mapStateToProps, { getListPost })(Home);

@@ -161,7 +161,7 @@ const mapStateToProps = ({ editProfile, auth }) => {
         loading: editProfile.loading,
         modalShow: editProfile.modalShow,
         profileUpdated: editProfile.profileUpdated,
-        oldPhoto: auth.user.user.photoURL
+        oldPhoto: auth.user ? auth.user.user.photoURL : ''
     }
 }
 

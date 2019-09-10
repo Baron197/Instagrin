@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Platform } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { Header, ListItem, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { logoutUser } from '../actions';
@@ -11,7 +12,11 @@ class Settings extends Component {
 
     componentDidUpdate() {
         if(!this.props.user) {
-            this.props.screenProps.rootStackNavigator.navigate('Login')
+            const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: 'Login' })],
+            });
+            this.props.screenProps.rootStackNavigator.dispatch(resetAction)
         }
     }
 

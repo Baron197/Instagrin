@@ -89,7 +89,8 @@ class LoginForm extends Component {
                     <Button
                         icon={
                             <Icon
-                                name="chevron-right"
+                                name="login"
+                                type="antdesign"
                                 size={20}
                                 color="white"
                             />
