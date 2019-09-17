@@ -7,7 +7,8 @@ import {
     FILL_POST_LIST,
     EMPTY_POST_LIST,
     SELECT_POST,
-    DELETE_POST
+    DELETE_POST,
+    SELECT_EXPLORE_POST
 } from './types';
 
 export const getListPost = () => {
@@ -41,6 +42,13 @@ export const getListPost = () => {
 export const selectPost = (selectedPost) => {
     return {
         type: SELECT_POST,
+        payload: selectedPost
+    }
+}
+
+export const selectExpPost = (selectedPost) => {
+    return {
+        type: SELECT_EXPLORE_POST,
         payload: selectedPost
     }
 }
