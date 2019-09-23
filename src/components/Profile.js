@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Platform, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Platform, Image, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { Header, ListItem, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { editProfileInit, selectPost } from '../actions';
@@ -38,7 +38,7 @@ class Profile extends Component {
         console.log(this.props.user)
         if(this.props.user) {
             return (
-                <View>
+                <View style={{flex:1}}>
                     <Header
                         leftComponent={{ 
                             text: this.props.user.user.displayName, 
@@ -72,16 +72,18 @@ class Profile extends Component {
                         type='outline'
                         onPress={this.onBtnEditProfilePress}
                     />
-                    <View 
-                        style={{
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
-                            justifyContent: 'space-between',
-                            flex: 1
-                        }}
-                    >
-                        {this.renderListPost()}
-                    </View>
+                    <ScrollView>
+                        <View 
+                            style={{
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                justifyContent: 'space-between',
+                                flex: 1
+                            }}
+                        >
+                            {this.renderListPost()}
+                        </View>
+                    </ScrollView>
                 </View>
             )
         }

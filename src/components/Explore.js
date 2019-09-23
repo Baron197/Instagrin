@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { selectExpPost } from '../actions';
@@ -39,7 +39,7 @@ class Explore extends Component {
         console.log(this.props.user)
         if(this.props.user) {
             return (
-                <View>
+                <View style={{ flex: 1 }}>
                     <SearchBar
                         placeholder="Search"
                         onChangeText={this.updateSearch}
@@ -50,16 +50,18 @@ class Explore extends Component {
                         lightTheme={true}
                         searchIcon={{ size: 27 }}
                     />
-                    <View 
-                        style={{
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
-                            justifyContent: 'space-between',
-                            flex: 1
-                        }}
-                    >
-                        {this.renderListPost()}
-                    </View>
+                    <ScrollView>
+                        <View 
+                            style={{
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                justifyContent: 'space-between',
+                                flex: 1
+                            }}
+                        >
+                            {this.renderListPost()}
+                        </View>
+                    </ScrollView>
                 </View>
             )
         }
